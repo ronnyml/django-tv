@@ -1,0 +1,21 @@
+# Files
+.DS_Store
+*.db
+*.pyc
+*.json
+*.patch
+.project
+.pydevproject
+
+# Django
+django_movies/local_settings.py
+
+# Directories
+logs/
+tmp/
+
+# Linux
+*~
+
+# KDE
+.directory
