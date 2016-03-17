@@ -59,7 +59,7 @@ class Organization(models.Model):
     slug = models.SlugField(max_length=MAX_LENGTH, blank=True)
     abbreviation = models.CharField(max_length=10)
     country = models.ForeignKey(Country)
-    formation = models.PositiveIntegerField(max_length=4)
+    formation = models.PositiveIntegerField()
     
     class Meta:
         db_table = 'movies_organizations'
@@ -76,7 +76,7 @@ class AwardCategory(models.Model):
     name = models.CharField(max_length=MAX_LENGTH)
     slug = models.SlugField(max_length=MAX_LENGTH, blank=True)
     awarded_for = models.CharField(max_length=MAX_LENGTH)
-    first_awarded = models.PositiveIntegerField(max_length=4)
+    first_awarded = models.PositiveIntegerField()
     
     class Meta:
         db_table = 'movies_award_categories'
@@ -95,7 +95,7 @@ class Award(models.Model):
     description = models.TextField(max_length=MAX_LENGTH, blank=True)
     presented_by = models.ForeignKey(Organization)
     country = models.ForeignKey(Country)
-    formation = models.PositiveIntegerField(max_length=4)
+    formation = models.PositiveIntegerField()
     website = models.URLField(max_length=MAX_LENGTH, blank=True)
     category = models.ManyToManyField(AwardCategory)
     
