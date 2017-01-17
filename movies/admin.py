@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from movies.models import *
-
 from django.contrib import admin
-admin.autodiscover()
+from movies.models import *
 
 class AwardAdmin(admin.ModelAdmin):
     list_display = ['name', 'presented_by', 'country', 'formation']
@@ -17,7 +15,7 @@ class AwardCategoryAdmin(admin.ModelAdmin):
     
 class CityAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug']
-    list_filter = ['country']
+    list_filter = (('country', admin.RelatedOnlyFieldListFilter),)
     ordering = ['name']
     prepopulated_fields = {"slug": ("name",)}
     
@@ -43,7 +41,11 @@ class LanguageAdmin(admin.ModelAdmin):
 
 class MovieAdmin(admin.ModelAdmin):
     list_display = ['name', 'name_es', 'director', 'release_date', 'language', 'image']
-    list_filter = ['director', 'language']
+    list_filter = (
+        ('director', admin.RelatedOnlyFieldListFilter), 
+        ('language', admin.RelatedOnlyFieldListFilter),
+        ('release_date'),
+    )
     ordering = ['name']
     prepopulated_fields = {"slug": ("name",)}
     search_fields = ['name']
@@ -55,7 +57,10 @@ class OrganizationAdmin(admin.ModelAdmin):
 
 class PersonAdmin(admin.ModelAdmin):
     list_display = ['full_name', 'slug', 'birth_date', 'country', 'image']
-    list_filter = ['person_type']
+    list_filter = (
+        ('person_type', admin.RelatedOnlyFieldListFilter), 
+        ('country', admin.RelatedOnlyFieldListFilter),
+    )
     prepopulated_fields = {"slug": ("first_name", "last_name")}
     search_fields = ['first_name', 'last_name']
 
