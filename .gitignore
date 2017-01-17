@@ -1,6 +1,6 @@
 # Files
 .DS_Store
-*.db
+db.sqlite3
 *.pyc
 *.json
 *.patch
@@ -8,11 +8,14 @@
 .pydevproject
 
 # Django
-django_movies/local_settings.py
+local_settings.py
 
 # Directories
 logs/
 tmp/
+media/
+__pycache__/
+env/
 
 # Linux
 *~

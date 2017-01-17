@@ -2,8 +2,7 @@
 
 from django.db import models
 from django.template.defaultfilters import slugify
-
-from thumbs import ImageWithThumbsField
+from utils.image_thumbs import ImageWithThumbsField
 
 MAX_LENGTH = 255
 
@@ -15,7 +14,7 @@ class Genre(models.Model):
         db_table = 'movies_genres'
         verbose_name_plural = 'Genres'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
@@ -31,7 +30,7 @@ class Country(models.Model):
         db_table = 'movies_countries'
         verbose_name_plural = 'Countries'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
@@ -47,7 +46,7 @@ class City(models.Model):
         db_table = 'movies_cities'
         verbose_name_plural = 'Cities'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
@@ -65,7 +64,7 @@ class Organization(models.Model):
         db_table = 'movies_organizations'
         verbose_name_plural = 'Organizations'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
@@ -82,7 +81,7 @@ class AwardCategory(models.Model):
         db_table = 'movies_award_categories'
         verbose_name_plural = 'Award Categories'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
@@ -103,7 +102,7 @@ class Award(models.Model):
         db_table = 'movies_awards'
         verbose_name_plural = 'Awards'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
@@ -123,7 +122,7 @@ class Festival(models.Model):
         db_table = 'movies_festivals'
         verbose_name_plural = 'Festivals'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
@@ -139,7 +138,7 @@ class Language(models.Model):
         db_table = 'movies_languages'
         verbose_name_plural = 'Languages'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
@@ -154,7 +153,7 @@ class PersonType(models.Model):
         db_table = 'movies_person_types'
         verbose_name_plural = 'Person Types'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
@@ -175,7 +174,7 @@ class Person(models.Model):
         db_table = 'movies_people'
         verbose_name_plural = 'People'
 
-    def __unicode__(self):
+    def __str__(self):
         full_name = self.first_name + " " + self.last_name
         return full_name
       
@@ -210,7 +209,7 @@ class Movie(models.Model):
         db_table = 'movies_movies'
         verbose_name_plural = 'Movies'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
