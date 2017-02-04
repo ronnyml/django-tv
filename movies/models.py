@@ -168,27 +168,28 @@ class Person(models.Model):
     person_type = models.ManyToManyField(PersonType)
     country = models.ForeignKey(Country)
     image = ImageWithThumbsField(upload_to='images/people/', blank=True, 
-				 sizes=((100, 100), (200, 200)))
+                                 sizes=((100, 100), (200, 200)))
      
     class Meta:
         db_table = 'movies_people'
         verbose_name_plural = 'People'
 
     def __str__(self):
-        full_name = self.first_name + " " + self.last_name
+        full_name = self.first_name + ' ' + self.last_name
         return full_name
       
     def full_name(self):
-       full_name = self.first_name + " " + self.last_name
+       full_name = self.first_name + ' ' + self.last_name
        return full_name
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.first_name) + "-" + slugify(self.last_name)
+        self.slug = slugify(self.first_name) + '-' + slugify(self.last_name)
         super(Person, self).save(*args, **kwargs)
 
 class Movie(models.Model):
     name = models.CharField(max_length=MAX_LENGTH)
-    name_es = models.CharField(max_length=MAX_LENGTH, verbose_name='Spanish Latin America')
+    name_es = models.CharField(max_length=MAX_LENGTH,
+                               verbose_name='Spanish Latin America')
     slug = models.SlugField(max_length=MAX_LENGTH, blank=True)
     description = models.TextField(max_length=MAX_LENGTH, blank=True)
     genre = models.ManyToManyField(Genre)
@@ -201,7 +202,7 @@ class Movie(models.Model):
     website = models.URLField(max_length=MAX_LENGTH, blank=True)
     trailer_url = models.URLField(max_length=MAX_LENGTH, blank=True)
     image = ImageWithThumbsField(upload_to='images/movies/', blank=True, 
-				 sizes=((100, 100), (200, 200)))
+                                 sizes=((100, 100), (200, 200)))
     award_category = models.ManyToManyField(AwardCategory, blank=True)
     festival = models.ManyToManyField(Festival, blank=True)
     
