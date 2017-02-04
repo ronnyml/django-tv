@@ -1,4 +1,4 @@
-"""django_posting URL Configuration
+"""django_movies URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.10/topics/http/urls/
@@ -15,9 +15,17 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from rest_framework import routers
 from movies import urls as app_urls
+from movies import views
+
+router = routers.DefaultRouter()
+router.register(r'movies', views.MovieViewSet)
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^', include(router.urls)),
     url(r'^', include(app_urls)),
+    url(r'^api-auth/', include('rest_framework.urls',
+                               namespace='rest_framework')),
 ]
