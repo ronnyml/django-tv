@@ -1,10 +1,11 @@
-Django-Movies
+Django React TV
 --------
 
-A **Django** project to manage my Movie Collection.
+A **Django React** project to manage your Movies / TV Shows collection.
 
+- Categories
 - Genres.
-- People (Actors, Actresses, Directors, ScreenWriters, Musicians, etc).
+- Roles (Actors, Actresses, Directors, Producers, ScreenWriters, Musicians, etc).
 - Film Information.
 - Awards.
 - Award Categories.

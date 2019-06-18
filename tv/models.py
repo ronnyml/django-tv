@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.template.defaultfilters import slugify
-from utils.image_thumbs import ImageWithThumbsField
 
 MAX_LENGTH = 255
 
@@ -11,7 +11,7 @@ class Genre(models.Model):
     slug = models.SlugField(max_length=MAX_LENGTH, blank=True)
     
     class Meta:
-        db_table = 'movies_genres'
+        db_table = 'tv_genres'
         verbose_name_plural = 'Genres'
 
     def __str__(self):
@@ -27,7 +27,7 @@ class Country(models.Model):
     code = models.CharField(max_length=2)
     
     class Meta:
-        db_table = 'movies_countries'
+        db_table = 'tv_countries'
         verbose_name_plural = 'Countries'
 
     def __str__(self):
@@ -40,10 +40,10 @@ class Country(models.Model):
 class City(models.Model):
     name = models.CharField(max_length=MAX_LENGTH)
     slug = models.SlugField(max_length=MAX_LENGTH, blank=True)
-    country = models.ForeignKey(Country)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
     
     class Meta:
-        db_table = 'movies_cities'
+        db_table = 'tv_cities'
         verbose_name_plural = 'Cities'
 
     def __str__(self):
@@ -57,11 +57,11 @@ class Organization(models.Model):
     name = models.CharField(max_length=MAX_LENGTH)
     slug = models.SlugField(max_length=MAX_LENGTH, blank=True)
     abbreviation = models.CharField(max_length=10)
-    country = models.ForeignKey(Country)
-    formation = models.PositiveIntegerField()
+    country = models.ForeignKey(Country, on_delete=models.PROTECT)
+    creation_date = models.DateField(null=True, blank=True)
     
     class Meta:
-        db_table = 'movies_organizations'
+        db_table = 'tv_organizations'
         verbose_name_plural = 'Organizations'
 
     def __str__(self):
@@ -69,16 +69,16 @@ class Organization(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        super(Organization, self).save(*args, **kwargs)         
+        super(Organization, self).save(*args, **kwargs)    
 
 class AwardCategory(models.Model):
     name = models.CharField(max_length=MAX_LENGTH)
     slug = models.SlugField(max_length=MAX_LENGTH, blank=True)
     awarded_for = models.CharField(max_length=MAX_LENGTH)
-    first_awarded = models.PositiveIntegerField()
+    creation_year = models.PositiveSmallIntegerField(null=True, blank=True)
     
     class Meta:
-        db_table = 'movies_award_categories'
+        db_table = 'tv_award_categories'
         verbose_name_plural = 'Award Categories'
 
     def __str__(self):
@@ -92,14 +92,14 @@ class Award(models.Model):
     name = models.CharField(max_length=MAX_LENGTH)
     slug = models.SlugField(max_length=MAX_LENGTH, blank=True)
     description = models.TextField(max_length=MAX_LENGTH, blank=True)
-    presented_by = models.ForeignKey(Organization)
-    country = models.ForeignKey(Country)
-    formation = models.PositiveIntegerField()
+    presented_by = models.ForeignKey(Organization, on_delete=models.PROTECT)
+    country = models.ForeignKey(Country, on_delete=models.PROTECT)
+    creation_date = models.DateField(null=True, blank=True)
     website = models.URLField(max_length=MAX_LENGTH, blank=True)
     category = models.ManyToManyField(AwardCategory)
     
     class Meta:
-        db_table = 'movies_awards'
+        db_table = 'tv_awards'
         verbose_name_plural = 'Awards'
 
     def __str__(self):
@@ -113,13 +113,13 @@ class Festival(models.Model):
     name = models.CharField(max_length=MAX_LENGTH)
     slug = models.SlugField(max_length=MAX_LENGTH, blank=True)
     description = models.TextField(max_length=MAX_LENGTH, blank=True)
-    country = models.ForeignKey(Country)
-    city = models.ForeignKey(City)
+    country = models.ForeignKey(Country, on_delete=models.PROTECT)
+    city = models.ForeignKey(City, on_delete=models.PROTECT)
     founded = models.DateField(blank=True)
     website = models.URLField(max_length=MAX_LENGTH, blank=True)
     
     class Meta:
-        db_table = 'movies_festivals'
+        db_table = 'tv_festivals'
         verbose_name_plural = 'Festivals'
 
     def __str__(self):
@@ -132,10 +132,10 @@ class Festival(models.Model):
 class Language(models.Model):
     name = models.CharField(max_length=MAX_LENGTH)
     slug = models.SlugField(max_length=MAX_LENGTH, blank=True)
-    code = models.CharField(max_length=2)
+    code = models.CharField(max_length=5)
     
     class Meta:
-        db_table = 'movies_languages'
+        db_table = 'tv_languages'
         verbose_name_plural = 'Languages'
 
     def __str__(self):
@@ -145,33 +145,32 @@ class Language(models.Model):
         self.slug = slugify(self.name)
         super(Language, self).save(*args, **kwargs)       
 
-class PersonType(models.Model):
+class PersonRole(models.Model):
     name = models.CharField(max_length=MAX_LENGTH)
     slug = models.SlugField(max_length=MAX_LENGTH, blank=True)
     
     class Meta:
-        db_table = 'movies_person_types'
-        verbose_name_plural = 'Person Types'
+        db_table = 'tv_person_roles'
+        verbose_name_plural = 'Person Roles'
 
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        super(PersonType, self).save(*args, **kwargs)
+        super(PersonRole, self).save(*args, **kwargs)
 
 class Person(models.Model):
     first_name = models.CharField(max_length=MAX_LENGTH)
     last_name = models.CharField(max_length=MAX_LENGTH)
     slug = models.SlugField(max_length=MAX_LENGTH, blank=True)
     birth_date = models.DateField(blank=True)
-    person_type = models.ManyToManyField(PersonType)
-    country = models.ForeignKey(Country)
-    image = ImageWithThumbsField(upload_to='images/people/', blank=True, 
-                                 sizes=((100, 100), (200, 200)))
+    person_role = models.ManyToManyField(PersonRole)
+    country = models.ForeignKey(Country, on_delete=models.PROTECT)
+    image = models.ImageField(upload_to='images/people/', blank=True)
      
     class Meta:
-        db_table = 'movies_people'
+        db_table = 'tv_people'
         verbose_name_plural = 'People'
 
     def __str__(self):
@@ -186,33 +185,49 @@ class Person(models.Model):
         self.slug = slugify(self.first_name) + '-' + slugify(self.last_name)
         super(Person, self).save(*args, **kwargs)
 
-class Movie(models.Model):
+class MovieTVShowCategory(models.Model):
     name = models.CharField(max_length=MAX_LENGTH)
-    name_es = models.CharField(max_length=MAX_LENGTH,
-                               verbose_name='Spanish Latin America')
     slug = models.SlugField(max_length=MAX_LENGTH, blank=True)
-    description = models.TextField(max_length=MAX_LENGTH, blank=True)
-    genre = models.ManyToManyField(Genre)
-    director = models.ForeignKey(Person)
-    release_date = models.DateField(blank=True)
-    budget = models.DecimalField(blank=True, decimal_places=2, max_digits=12)
-    running_time = models.PositiveIntegerField(blank=True)
-    country = models.ManyToManyField(Country)
-    language = models.ForeignKey(Language)
-    website = models.URLField(max_length=MAX_LENGTH, blank=True)
-    trailer_url = models.URLField(max_length=MAX_LENGTH, blank=True)
-    image = ImageWithThumbsField(upload_to='images/movies/', blank=True, 
-                                 sizes=((100, 100), (200, 200)))
-    award_category = models.ManyToManyField(AwardCategory, blank=True)
-    festival = models.ManyToManyField(Festival, blank=True)
     
     class Meta:
-        db_table = 'movies_movies'
-        verbose_name_plural = 'Movies'
+        db_table = 'tv_movies_tvshows_categories'
+        verbose_name_plural = 'Movie TV Shows Categories'
 
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        super(Movie, self).save(*args, **kwargs)
+        super(MovieTVShowCategory, self).save(*args, **kwargs)
+
+class MovieTVShow(models.Model):
+    name = models.CharField(max_length=MAX_LENGTH)
+    name_es = models.CharField(max_length=MAX_LENGTH,
+                               verbose_name='Spanish Latin America', blank=True)
+    slug = models.SlugField(max_length=MAX_LENGTH, blank=True)
+    category = models.ForeignKey(MovieTVShowCategory, on_delete=models.PROTECT)
+    description = models.TextField(max_length=MAX_LENGTH, blank=True)
+    genre = models.ManyToManyField(Genre)
+    director = models.ForeignKey(Person, on_delete=models.PROTECT)
+    release_date = models.DateField(blank=True)
+    budget = models.DecimalField(null=True, blank=True, decimal_places=2, max_digits=12)
+    running_time = models.CharField(max_length=10, null=True, blank=True)
+    country = models.ManyToManyField(Country)
+    language = models.ForeignKey(Language, on_delete=models.PROTECT)
+    website = models.URLField(max_length=MAX_LENGTH, blank=True)
+    trailer_url = models.URLField(max_length=MAX_LENGTH, blank=True)
+    no_seasons = models.PositiveSmallIntegerField(null=True, blank=True)
+    image = models.ImageField(upload_to='images/movie_tvshows/', blank=True)
+    award_category = models.ManyToManyField(AwardCategory, blank=True)
+    festival = models.ManyToManyField(Festival, blank=True)
+    
+    class Meta:
+        db_table = 'tv_movies_tvshows'
+        verbose_name_plural = 'Movies TV Shows'
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(MovieTVShow, self).save(*args, **kwargs)
