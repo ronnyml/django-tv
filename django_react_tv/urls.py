@@ -14,19 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from rest_framework import routers
 from django.contrib import admin
 from django.urls import include, path
 from tv import urls as app_urls
-from tv import views
-
-
-router = routers.DefaultRouter()
-router.register(r'tv', views.MovieTVShowViewSet, basename='movie_tvshow')
+from api import urls as api_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(router.urls)),
-    path('', include(app_urls)),
-    path('api/', include('rest_framework.urls')),
+    path('api/', include(api_urls)),
+    path('api-auth/', include('rest_framework.urls')),
 ]
