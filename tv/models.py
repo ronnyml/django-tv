@@ -58,11 +58,12 @@ class Organization(models.Model):
     slug = models.SlugField(max_length=MAX_LENGTH, blank=True)
     abbreviation = models.CharField(max_length=10)
     country = models.ForeignKey(Country, on_delete=models.PROTECT)
+    website = models.URLField(max_length=MAX_LENGTH, blank=True)
     creation_date = models.DateField(null=True, blank=True)
     
     class Meta:
         db_table = 'tv_organizations'
-        verbose_name_plural = 'Organizations'
+        verbose_name_plural = 'Award Organizations'
 
     def __str__(self):
         return self.name

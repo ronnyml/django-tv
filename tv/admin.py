@@ -4,12 +4,12 @@ from django.contrib import admin
 from tv.models import *
 
 class AwardAdmin(admin.ModelAdmin):
-    list_display = ['name', 'presented_by', 'country', 'creation_date']
+    list_display = ['name', 'presented_by', 'country', 'creation_date', 'website']
     ordering = ['name']
     prepopulated_fields = {'slug': ('name',)}
     
 class AwardCategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'creation_year', 'awarded_for']
+    list_display = ['name', 'slug', 'awarded_for']
     ordering = ['name']
     prepopulated_fields = {'slug': ('name',)}
     
@@ -61,7 +61,7 @@ class MovieTVShowCategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
     
 class OrganizationAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'abbreviation', 'country', 'creation_date']
+    list_display = ['name', 'slug', 'abbreviation', 'country', 'creation_date', 'website']
     ordering = ['name']
     prepopulated_fields = {'slug': ('name',)}
 
