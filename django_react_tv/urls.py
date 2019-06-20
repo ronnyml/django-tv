@@ -16,12 +16,13 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
-from tv import urls as app_urls
-from api import urls as api_urls
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(app_urls)),
-    path('api/', include(api_urls)),
-    path('api-auth/', include('rest_framework.urls')),
+    path('', include('tv.urls')),
+    path('api/', include('api.urls')),
+    path('api-token-auth/', obtain_jwt_token),
+    path('api-token-refresh/', refresh_jwt_token),
+    path('api-token-verify/', verify_jwt_token),
 ]
