@@ -1,13 +1,15 @@
+{% load render_bundle from webpack_loader %}
 <!DOCTYPE html>
 <html>
-<head>
-<meta name="viewport" content="width=device-width"/>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>{% block title %} {% endblock %}</title>
-</head>
-
+  <head>
+    <meta name="viewport" content="width=device-width"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    {% render_bundle 'main' 'css' %}
+    <title>{% block title %} {% endblock %}</title>
+  </head>
 <body>
     {% block content %}
     {% endblock %}
+    {% render_bundle 'main' 'js' %}
 </body>
 </html>

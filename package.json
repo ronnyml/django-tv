@@ -1,0 +1,41 @@
+{
+  "name": "django-react-tv",
+  "version": "1.0.0",
+  "description": "Django React TV frontend",
+  "main": "index.js",
+  "scripts": {
+    "start": "./node_modules/.bin/webpack --config webpack.config.js",
+    "watch": "npm run start -- --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ronnyml/django-react-tv.git"
+  },
+  "author": "Ronny Yabar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ronnyml/django-react-tv/issues"
+  },
+  "homepage": "https://github.com/ronnyml/django-react-tv#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "css-loader": "^3.0.0",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.34.0",
+    "webpack-bundle-tracker": "^0.4.2-beta",
+    "webpack-cli": "^3.3.4"
+  },
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  }
+}
