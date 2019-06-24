@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 
+import os
+from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.utils.html import format_html
+from sorl.thumbnail import ImageField, get_thumbnail
 
 MAX_LENGTH = 255
 
@@ -168,7 +172,7 @@ class Person(models.Model):
     birth_date = models.DateField(blank=True)
     person_role = models.ManyToManyField(PersonRole)
     country = models.ForeignKey(Country, on_delete=models.PROTECT)
-    image = models.ImageField(upload_to='images/people/', blank=True)
+    image = ImageField(upload_to='images/people/', blank=True)
      
     class Meta:
         db_table = 'tv_people'
@@ -181,6 +185,13 @@ class Person(models.Model):
     def full_name(self):
        full_name = self.first_name + ' ' + self.last_name
        return full_name
+
+    @property
+    def thumbnail(self):
+        if self.image:
+            url = get_thumbnail(self.image, '100x100').url
+            return format_html('<img src="%s" />' % (url))
+        return None
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.first_name) + '-' + slugify(self.last_name)
@@ -218,7 +229,7 @@ class MovieTVShow(models.Model):
     website = models.URLField(max_length=MAX_LENGTH, blank=True)
     trailer_url = models.URLField(max_length=MAX_LENGTH, blank=True)
     no_seasons = models.PositiveSmallIntegerField(null=True, blank=True)
-    image = models.ImageField(upload_to='images/movie_tvshows/', blank=True)
+    image = ImageField(upload_to='images/movie_tvshows/', blank=True)
     award_category = models.ManyToManyField(AwardCategory, blank=True)
     festival = models.ManyToManyField(Festival, blank=True)
     
@@ -228,6 +239,13 @@ class MovieTVShow(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def thumbnail(self):
+        if self.image:
+            url = get_thumbnail(self.image, '100x100').url
+            return format_html('<img src="%s" />' % (url))
+        return None
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)

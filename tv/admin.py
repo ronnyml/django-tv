@@ -43,7 +43,7 @@ class MovieTVShowAdmin(admin.ModelAdmin):
     list_display = [
         'name', 'name_es',
         'director', 'release_date',
-        'language', 'image'
+        'language', 'thumbnail'
     ]
     list_filter = (
         ('category', admin.RelatedOnlyFieldListFilter),
@@ -66,7 +66,7 @@ class OrganizationAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ['full_name', 'slug', 'birth_date', 'country', 'image']
+    list_display = ['full_name', 'slug', 'birth_date', 'country', 'thumbnail']
     list_filter = (
         ('person_role', admin.RelatedOnlyFieldListFilter),
         ('country', admin.RelatedOnlyFieldListFilter),
