@@ -1,7 +1,7 @@
-Django React TV
+Django TV
 --------
 
-A **Django React** project to manage your Movies / TV Shows collection.
+A **Django** project to manage your Movies / TV Shows collection.
 
 - Categories
 - Genres.
